@@ -1,0 +1,60 @@
+<div id="exists" *ngIf="this.already_exists == 'already_exists'">
+    <h1 style="color: white; margin: 0 auto; text-align: center;"> Nickname already in use!</h1>
+</div>
+
+<div id="overlay">
+    <div class="container">
+        <h2>Enter your nickname</h2>
+        <input class="nickname" type='text' id="username" #username [(ngModel)]='sadasd' placeholder="no sleep...">
+        <button id="send_username" [disabled]="!sadasd" (click)='submit_username(username.value)' (click)="off()"></button>
+    </div>
+</div>
+
+<div class=wrapper>
+    <div class="users" id="users">
+        <button class="send_to_username" value="broadcast" [ngClass]="{'active':isClicked}"
+            (click)="isClicked = (isClicked ? false :true); getReceiver('all')">
+            Message to all members</button>
+        <button class="send_to_username" value="{{user}}" *ngFor='let user of users;  let i = index' [class.active]="active === user"
+            (click)="active = (active === user ? null :user); getReceiver(user)">
+            {{user}}</button>
+    </div>
+
+    <div class="chat">
+        <div id="log">
+            <div *ngFor="let block of blocks" id="{{block}}" class="common_block">
+            </div>
+
+            <div class="outblock" *ngFor='let message of messages;  let i = index'>
+                <div [ngClass]="message.sender ? 'incoming_message' : 'outgoing_message' ">
+                    <p *ngIf='message.private'>Private from: {{message.sender || message.from}}</p>
+                    <p *ngIf='message.broadcast'>Broadcast from: {{message.sender || message.from}}</p>
+                    <p>{{message?.data}}</p>
+                    <img *ngIf="message.sticker" src="../assets/stickers/{{message.sticker}}">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="kostil" id="kostil">
+        <button *ngIf="status" id="disconnect_user" (click)="disconnect_user()">Kick user</button>
+    </div>
+
+    <div class="text">
+        <input type="text" [(ngModel)]="addTaskValue" #private_message (keyup.enter)='send_private_message(private_message.value)' placeholder="Message...">
+        <button (click)="send_private_message(private_message.value)">Send</button>
+        <button id="stickers_list">&#9824;</button>
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="stickerimg" *ngFor='let sticker of stickers;  let i = index'>
+                <img src="../assets/stickers/{{sticker}}" width="150px" class="selected_img" (click)="send_sticker(sticker)"
+                    name='{{sticker}}'>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
